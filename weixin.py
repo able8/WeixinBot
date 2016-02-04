@@ -181,15 +181,15 @@ class WebWeixin(object):
 
 	def synccheck(self):
 		params = {
-			'r': int(time.time()),
+			'r': int(time.time() * 1000),
 			'sid': self.sid,
 			'uin': self.uin,
 			'skey': self.skey,
 			'deviceid': self.deviceId,
 			'synckey': self.synckey,
-			'_': int(time.time()),
+			'_': int(time.time() * 1000),
 		}
-		url = 'https://webpush.weixin.qq.com/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
+		url = 'https://webpush2.weixin.qq.com/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
 		data = self._get(url)
 		pm = re.search(r'window.synccheck={retcode:"(\d+)",selector:"(\d+)"}', data)
 		retcode = pm.group(1)
