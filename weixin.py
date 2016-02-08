@@ -192,7 +192,7 @@ class WebWeixin(object):
 			'synckey': self.synckey,
 			'_': int(time.time()),
 		}
-		url = 'http://' + self.webpush + '.weixin.qq.com/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
+		url = 'https://' + self.webpush + '.weixin.qq.com/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
 		data = self._get(url)
 		pm = re.search(r'window.synccheck={retcode:"(\d+)",selector:"(\d+)"}', data)
 		retcode = pm.group(1)
