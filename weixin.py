@@ -37,6 +37,7 @@ class WebWeixin(object):
 		self.uuid = ''
 		self.base_uri = ''
 		self.redirect_uri= ''
+		self.webpush = 'webpush'
 		self.uin = ''
 		self.sid = ''
 		self.skey = ''
@@ -85,6 +86,8 @@ class WebWeixin(object):
 		elif code == '200':
 			pm = re.search(r'window.redirect_uri="(\S+?)";', data)
 			r_uri = pm.group(1) + '&fun=new'
+			if r_uri[10] == '2':
+				self.webpush += '2'
 			self.redirect_uri = r_uri
 			self.base_uri = r_uri[:r_uri.rfind('/')]
 			return True
@@ -181,15 +184,15 @@ class WebWeixin(object):
 
 	def synccheck(self):
 		params = {
-			'r': int(time.time() * 1000),
+			'r': int(time.time()),
 			'sid': self.sid,
 			'uin': self.uin,
 			'skey': self.skey,
 			'deviceid': self.deviceId,
 			'synckey': self.synckey,
-			'_': int(time.time() * 1000),
+			'_': int(time.time()),
 		}
-		url = 'https://webpush2.weixin.qq.com/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
+		url = 'http://' + self.webpush + '.weixin.qq.com/cgi-bin/mmwebwx-bin/synccheck?' + urllib.urlencode(params)
 		data = self._get(url)
 		pm = re.search(r'window.synccheck={retcode:"(\d+)",selector:"(\d+)"}', data)
 		retcode = pm.group(1)
